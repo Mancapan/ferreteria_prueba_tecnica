@@ -4,22 +4,18 @@ import java.util.List;
 
 public interface IProductoService {
 
-
         //READ
-
         List<Producto> traerProductos();
-        Producto buscarProducto(Long id);
+        Producto buscarProducto(Long codProducto);
 
         // CREATE
-
         Producto crearProducto(Producto producto);
 
         // UPDATE
+        Producto editarProducto (long codProducto, Producto producto);
 
-        Producto Editar (Producto producto);
-
-
-        void eliminarProducto(Long id);
+        // DELETE
+        boolean eliminarProducto(Long codProducto);
 
 
 
