@@ -3,6 +3,8 @@ import com.ferreteria.maab.model.Producto;
 import java.util.List;
 
 public interface IProductoService {
+// en esta interface van los metodos sin implementar; class producto service implementa los metodos y sobrescribe;
+
 
         //READ
         List<Producto> traerProductos();
@@ -16,8 +18,6 @@ public interface IProductoService {
 
         // DELETE
         boolean eliminarProducto(Long codProducto);
-
-
 
 
 

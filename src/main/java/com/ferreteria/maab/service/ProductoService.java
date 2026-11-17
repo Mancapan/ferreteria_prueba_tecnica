@@ -7,9 +7,11 @@ import java.io.Serializable;
 import java.util.List;
 
 @Service
+// marcar como service
+
 public class ProductoService implements IProductoService {
 
-    private final IProductoRepository productoRepository;
+    private final IProductoRepository productoRepository;// instancia de interface iproducrepository
 
     // inyección de dependencia: el productservice se comunica con el repository
     public ProductoService(IProductoRepository productoRepository) {
@@ -39,11 +41,33 @@ public class ProductoService implements IProductoService {
 
     @Override
     public Producto editarProducto(long codProducto, Producto producto) {
-        return null;
+    // buscar producto
+     Producto productoExist = buscarProducto(codProducto);
+     // validacion
+        if(productoExist== null){
+           return null;
+        }
+        productoExist.setCategoria(producto.getCategoria());
+        productoExist.setDescripcion(producto.getDescripcion());
+        productoExist.setMarca(producto.getMarca());
+        productoExist.setStock(producto.getStock());
+        productoExist.setNombre(producto.getNombre());
+        productoExist.setPrecio(producto.getPrecio());
+
+        return productoRepository.save(productoExist);
     }
 
     @Override
     public boolean eliminarProducto(Long codProducto) {
-        return false;
+    // buscar
+     Producto productoExist = buscarProducto(codProducto);
+     if(productoExist == null){
+         return false;
+     }
+    productoRepository.delete(productoExist);
+     return true;
     }
+
+
+
 }

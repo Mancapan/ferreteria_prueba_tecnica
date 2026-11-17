@@ -1,8 +1,6 @@
 package com.ferreteria.maab.model;
 
-
 import jakarta.persistence.*;
-
 
 @Entity
 public class Producto {
@@ -89,8 +87,6 @@ public Producto(long codProducto, String descripcion, int stock, Double precio, 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-
 
 
 }// producto

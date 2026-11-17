@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
+// indica que este es un repositorio que usará JPA PARA COMUNICARSE con la base de datos;
 public interface IProductoRepository extends JpaRepository<Producto,Long> {
 
 
