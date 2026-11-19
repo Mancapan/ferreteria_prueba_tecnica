@@ -1,11 +1,8 @@
 package com.ferreteria.maab.controller;
 
 import com.ferreteria.maab.model.Producto;
-import com.ferreteria.maab.repository.IProductoRepository;
 import com.ferreteria.maab.service.IProductoService;
-import com.ferreteria.maab.service.ProductoService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +12,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/productos")
 
-public class ProductoController {
+public class ProductoRestController {
 
     private final IProductoService productoService;
 
-    public ProductoController(IProductoService productoService) {
+    public ProductoRestController(IProductoService productoService) {
 
         this.productoService = productoService;
     }

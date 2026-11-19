@@ -7,6 +7,7 @@ public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
 private Long codProducto;
 
 private String nombre;
@@ -32,7 +33,7 @@ public Producto(Long codProducto, String descripcion, Integer stock, Double prec
     }
 
 
-    public long getCodProducto() {
+    public Long getCodProducto() {
         return codProducto;
     }
 

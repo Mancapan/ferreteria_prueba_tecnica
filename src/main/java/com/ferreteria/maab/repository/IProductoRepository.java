@@ -9,8 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface IProductoRepository extends JpaRepository<Producto,Long> {
 
 
-
-
-
-
 }
