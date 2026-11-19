@@ -7,13 +7,13 @@ public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long codProducto;
 
-private long codProducto;
 private String nombre;
 private String marca;
 private String categoria;
 private Double precio;
-private int stock;
+private Integer stock;
 private String descripcion;
 
 
@@ -21,7 +21,7 @@ public Producto() {
 
 }
 
-public Producto(long codProducto, String descripcion, int stock, Double precio, String categoria, String marca, String nombre) {
+public Producto(Long codProducto, String descripcion, Integer stock, Double precio, String categoria, String marca, String nombre) {
         this.codProducto = codProducto;
         this.descripcion = descripcion;
         this.stock = stock;

@@ -33,7 +33,12 @@ public class ProductoService implements IProductoService {
         if(producto == null){
             return null;
         }
-       //retorno producto completo guardado con id ytodo;
+        boolean valido = this.validarDatos(producto);
+        if(valido == false){
+            return null;
+        }
+
+        //retorno producto completo guardado con id ytodo;
         //id se genera automaticamente en bd
       return productoRepository.save(producto);
 
@@ -47,6 +52,11 @@ public class ProductoService implements IProductoService {
         if(productoExist== null){
            return null;
         }
+        boolean valido = this.validarDatos(producto);
+        if(valido==false){
+            return null;
+        }
+
         productoExist.setCategoria(producto.getCategoria());
         productoExist.setDescripcion(producto.getDescripcion());
         productoExist.setMarca(producto.getMarca());
@@ -67,6 +77,23 @@ public class ProductoService implements IProductoService {
     productoRepository.delete(productoExist);
      return true;
     }
+
+public boolean validarDatos(Producto producto){
+        if(producto.getNombre() == null||producto.getNombre().isBlank()){
+            return false;
+        }  if(producto.getCategoria() == null||producto.getCategoria().isBlank()){
+        return false;
+            }   if(producto.getMarca() == null||producto.getMarca().isBlank()){
+        return false;
+            }  if(producto.getPrecio() == null||producto.getPrecio() <=0){
+        return false;
+                 }if(producto.getStock() <=0){
+        return false;
+         }
+
+return true;
+
+}
 
 
 
