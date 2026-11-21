@@ -14,7 +14,7 @@ public interface IProductoService {
         Producto crearProducto(Producto producto);
 
         // UPDATE
-        Producto editarProducto (long codProducto, Producto producto);
+        Producto editarProducto (Long codProducto, Producto producto);
 
         // DELETE
         boolean eliminarProducto(Long codProducto);

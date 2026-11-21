@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo} + ' | Ferretería'">Registrar producto | Ferretería</title>
+
+    <!-- Hoja de estilos compartida: src/main/resources/static/css/styles.css -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="../../static/css/styles.css">
+</head>
+<body>
+
+<!-- ============================================================
+     ENCABEZADO
+     ============================================================ -->
+<header class="encabezado">
+    <div class="encabezado__contenido">
+        <div class="encabezado__logo" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="encabezado__titulo">Ferretería</h1>
+            <p class="encabezado__subtitulo">Sistema de Gestión</p>
+        </div>
+    </div>
+</header>
+
+<!-- ============================================================
+     CONTENIDO PRINCIPAL
+     ============================================================ -->
+<main class="contenedor">
+
+    <div class="barra-titulo">
+        <h2 class="titulo-principal">
+            <span th:text="${titulo}">Registrar producto</span>
+            <span class="titulo-principal__contador">
+                Todos los campos son obligatorios, excepto la descripción.
+            </span>
+        </h2>
+    </div>
+
+    <!-- Error enviado por el controller: model.addAttribute("error", ...) -->
+    <div class="alerta alerta--error" role="alert" th:if="${error}" th:text="${error}">
+        Revisar datos. Nombre, marca y categoría son obligatorios. Precio &gt; 0
+    </div>
+
+    <div class="tarjeta-formulario">
+
+        <!-- th:object enlaza el formulario con el atributo "producto" del Model.
+             th:field="*{campo}" genera id, name y value a partir de cada atributo. -->
+        <form th:action="@{/productos/crear}" action="#" th:object="${producto}" method="post">
+
+            <!-- Vacío = producto nuevo (crear). Con valor = edición. -->
+            <input type="hidden" th:field="*{codProducto}">
+
+            <div class="formulario__grid">
+
+                <div class="campo campo--completo">
+                    <label class="campo__etiqueta" for="nombre">Nombre</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" class="campo__control"
+                           placeholder="Ej: Martillo carpintero" maxlength="100" required>
+                </div>
+
+                <div class="campo">
+                    <label class="campo__etiqueta" for="marca">Marca</label>
+                    <input type="text" id="marca" th:field="*{marca}" class="campo__control"
+                           placeholder="Ej: Stanley" maxlength="60" required>
+                </div>
+
+                <div class="campo">
+                    <label class="campo__etiqueta" for="categoria">Categoría</label>
+                    <!-- datalist: sugiere categorías pero permite escribir una nueva -->
+                    <input type="text" id="categoria" th:field="*{categoria}" class="campo__control"
+                           list="lista-categorias" placeholder="Selecciona o escribe" maxlength="60" required>
+                    <datalist id="lista-categorias">
+                        <option value="Herramientas"></option>
+                        <option value="Eléctricos"></option>
+                        <option value="Gasfitería"></option>
+                        <option value="Pinturas"></option>
+                        <option value="Construcción"></option>
+                        <option value="Fijaciones"></option>
+                        <option value="Jardín"></option>
+                        <option value="Seguridad"></option>
+                    </datalist>
+                </div>
+
+                <div class="campo">
+                    <label class="campo__etiqueta" for="precio">Precio ($)</label>
+                    <input type="number" id="precio" th:field="*{precio}" class="campo__control"
+                           placeholder="Ej: 12990" min="1" step="1" required>
+                </div>
+
+                <div class="campo">
+                    <label class="campo__etiqueta" for="stock">Stock</label>
+                    <input type="number" id="stock" th:field="*{stock}" class="campo__control"
+                           placeholder="Ej: 24" min="1" step="1" required>
+                </div>
+
+                <div class="campo campo--completo">
+                    <label class="campo__etiqueta" for="descripcion">Descripción</label>
+                    <textarea id="descripcion" th:field="*{descripcion}" class="campo__control"
+                              placeholder="Detalle del producto (opcional)" maxlength="255"></textarea>
+                </div>
+            </div>
+
+            <div class="formulario__acciones">
+                <a th:href="@{/productos}" href="listaProductos.html" class="boton boton--secundario">
+                    Cancelar
+                </a>
+                <button type="submit" class="boton boton--primario">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Guardar producto
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

@@ -37,7 +37,7 @@ public Producto(Long codProducto, String descripcion, Integer stock, Double prec
         return codProducto;
     }
 
-    public void setCodProducto(long codProducto) {
+    public void setCodProducto(Long codProducto) {
         this.codProducto = codProducto;
     }
 
@@ -73,11 +73,11 @@ public Producto(Long codProducto, String descripcion, Integer stock, Double prec
         this.precio = precio;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 

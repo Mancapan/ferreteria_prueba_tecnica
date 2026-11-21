@@ -76,7 +76,7 @@ return "redirect:/productos";
 
 }
 
-@GetMapping("/editar/{codProd}")
+@GetMapping("/editar/{codProducto}")
 
 	public String mostrarFromularioEditar(
 			@PathVariable Long codProducto, Model model) {

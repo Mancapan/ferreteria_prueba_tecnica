@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos | Ferretería</title>
+
+    <!-- Hoja de estilos compartida: src/main/resources/static/css/styles.css
+         th:href se usa con el servidor; href permite ver el diseño abriendo el archivo directo. -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="../../static/css/styles.css">
+</head>
+<body>
+
+<!-- ============================================================
+     ENCABEZADO
+     ============================================================ -->
+<header class="encabezado">
+    <div class="encabezado__contenido">
+        <div class="encabezado__logo" aria-hidden="true">
+            <!-- Icono llave inglesa -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="encabezado__titulo">Ferretería</h1>
+            <p class="encabezado__subtitulo">Sistema de Gestión</p>
+        </div>
+    </div>
+</header>
+
+<!-- ============================================================
+     CONTENIDO PRINCIPAL
+     ============================================================ -->
+<main class="contenedor">
+
+    <!-- Mensaje flash (RedirectAttributes.addFlashAttribute("mensaje", ...)) -->
+    <div class="alerta" role="status" th:if="${mensaje}" th:text="${mensaje}">
+        Producto guardado correctamente
+    </div>
+
+    <div class="barra-titulo">
+        <h2 class="titulo-principal">
+            Productos registrados
+            <span class="titulo-principal__contador"
+                  th:text="${#lists.size(productos)} + ' productos en inventario'">
+                3 productos en inventario
+            </span>
+        </h2>
+
+        <a th:href="@{/productos/nuevo}" href="#" class="boton boton--primario">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Nuevo producto
+        </a>
+    </div>
+
+    <div class="tarjeta-tabla">
+        <table class="tabla">
+            <thead>
+            <tr>
+                <th scope="col">Cod</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Categoría</th>
+                <th scope="col" class="col-numero">Precio</th>
+                <th scope="col" class="col-numero">Stock</th>
+                <th scope="col">Descripción</th>
+                <th scope="col" class="col-acciones">Acciones</th>
+            </tr>
+            </thead>
+
+            <!-- th:remove="all-but-first": Thymeleaf deja solo la primera fila (la plantilla
+                 del th:each) y elimina las filas de ejemplo, que sirven para ver el diseño
+                 abriendo el archivo directamente en el navegador. -->
+            <tbody th:remove="all-but-first">
+
+            <tr th:each="p : ${productos}">
+                <td class="col-cod" data-label="Cod" th:text="${p.codProducto}">1</td>
+                <td class="col-nombre" data-label="Nombre" th:text="${p.nombre}">Martillo carpintero</td>
+                <td data-label="Marca" th:text="${p.marca}">Stanley</td>
+                <td data-label="Categoría">
+                    <span class="etiqueta" th:text="${p.categoria}">Herramientas</span>
+                </td>
+                <td class="col-numero" data-label="Precio"
+                    th:text="${p.precio != null} ? '$ ' + ${#numbers.formatDecimal(p.precio, 1, 'POINT', 0, 'COMMA')} : '-'">
+                    $ 12.990
+                </td>
+                <td class="col-numero" data-label="Stock">
+                    <span class="stock"
+                          th:classappend="${p.stock != null and p.stock <= 5} ? 'stock--bajo'"
+                          th:text="${p.stock}">24</span>
+                </td>
+                <td class="col-descripcion" data-label="Descripción"
+                    th:text="${p.descripcion}">Martillo de 16 oz con mango de fibra de vidrio</td>
+                <td class="col-acciones" data-label="Acciones">
+                    <div class="acciones">
+                        <!-- Editar: GET /productos/editar/{codProducto} -->
+                        <a th:href="@{/productos/editar/{id}(id=${p.codProducto})}" href="#"
+                           class="boton-icono boton-icono--editar"
+                           title="Editar producto" aria-label="Editar producto">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                                 stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20h9"/>
+                                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                            </svg>
+                        </a>
+
+                        <!-- Eliminar: POST /productos/eliminar/{codProducto} -->
+                        <form th:action="@{/productos/eliminar/{id}(id=${p.codProducto})}" action="#" method="post"
+                              onsubmit="return confirm('¿Seguro que deseas eliminar este producto?');">
+                            <button type="submit" class="boton-icono boton-icono--eliminar"
+                                    title="Eliminar producto" aria-label="Eliminar producto">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                                     stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                    <path d="M10 11v6"/>
+                                    <path d="M14 11v6"/>
+                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Filas de ejemplo: solo visibles al abrir el HTML sin servidor -->
+            <tr>
+                <td class="col-cod" data-label="Cod">2</td>
+                <td class="col-nombre" data-label="Nombre">Taladro percutor</td>
+                <td data-label="Marca">Bosch</td>
+                <td data-label="Categoría"><span class="etiqueta">Eléctricos</span></td>
+                <td class="col-numero" data-label="Precio">$ 89.990</td>
+                <td class="col-numero" data-label="Stock"><span class="stock stock--bajo">3</span></td>
+                <td class="col-descripcion" data-label="Descripción">Taladro 650 W con maletín y set de brocas</td>
+                <td class="col-acciones" data-label="Acciones">
+                    <div class="acciones">
+                        <a href="#" class="boton-icono boton-icono--editar" aria-label="Editar producto">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        </a>
+                        <button type="button" class="boton-icono boton-icono--eliminar" aria-label="Eliminar producto">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-cod" data-label="Cod">3</td>
+                <td class="col-nombre" data-label="Nombre">Pintura látex blanca</td>
+                <td data-label="Marca">Sipa</td>
+                <td data-label="Categoría"><span class="etiqueta">Pinturas</span></td>
+                <td class="col-numero" data-label="Precio">$ 24.500</td>
+                <td class="col-numero" data-label="Stock"><span class="stock">40</span></td>
+                <td class="col-descripcion" data-label="Descripción">Galón 3,78 L, uso interior y exterior</td>
+                <td class="col-acciones" data-label="Acciones">
+                    <div class="acciones">
+                        <a href="#" class="boton-icono boton-icono--editar" aria-label="Editar producto">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        </a>
+                        <button type="button" class="boton-icono boton-icono--eliminar" aria-label="Eliminar producto">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+
+            <!-- Estado vacío: se muestra solo si no hay productos.
+                 El bloque de comentario especial de Thymeleaf (prototype-only) lo oculta
+                 al abrir el HTML sin servidor, pero Thymeleaf sí lo procesa. -->
+            <!--/*/
+            <tbody th:if="${#lists.isEmpty(productos)}">
+            <tr>
+                <td colspan="8" class="tabla-vacia">
+                    No hay productos registrados. Usa el botón “Nuevo producto” para agregar el primero.
+                </td>
+            </tr>
+            </tbody>
+            /*/-->
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

@@ -45,7 +45,7 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public Producto editarProducto(long codProducto, Producto producto) {
+    public Producto editarProducto(Long codProducto, Producto producto) {
     // buscar producto
      Producto productoExist = buscarProducto(codProducto);
      // validacion
@@ -87,7 +87,7 @@ public boolean validarDatos(Producto producto){
         return false;
             }  if(producto.getPrecio() == null||producto.getPrecio() <=0){
         return false;
-                 }if(producto.getStock() <=0){
+                 }if(producto.getStock() == null || producto.getStock() <=0){
         return false;
          }
 
